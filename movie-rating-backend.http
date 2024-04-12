@@ -1,0 +1,6 @@
+@movie_rating_backend_HostAddress = http://localhost:5188
+
+GET {{movie_rating_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
