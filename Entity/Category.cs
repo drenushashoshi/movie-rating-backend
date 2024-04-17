@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace movie_rating_backend.Models
+namespace movie_rating_backend.Entity
 {
     public class Category
     {
-        [Key]
+        
         public int Id { get; set; }
 
         public required string Name { get; set; }
 
-        public ICollection<Movie> Movies { get; set; }
+        public List<Movie>? Movies { get; set; }
 
 
     }
