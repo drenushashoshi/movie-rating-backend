@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using movie_rating_backend.Mappings;
 using movie_rating_backend.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 using System;
 
@@ -19,6 +22,25 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseNpgsql(configuration.GetConnectionString("WebApiDatabase"));
 });
+builder.Services.AddAuthentication(options =>
+                  {
+                          options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                          options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                          options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                  }
+                  ).AddJwtBearer(x =>
+                  {
+                          x.TokenValidationParameters = new TokenValidationParameters
+                          {
+                                  ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                                  ValidAudience = builder.Configuration["Jwt:Audience"],
+                                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                                  ValidateIssuer = true,
+                                  ValidateAudience = true,
+                                  ValidateLifetime = true,
+                                  ValidateIssuerSigningKey = true
+                          };
+                  });
 
 var app = builder.Build();
 
@@ -31,6 +53,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
