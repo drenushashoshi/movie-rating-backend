@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using movie_rating_backend.Mappings;
-using movie_rating_backend.Services;
+using movie_rating_backend.Services.Implementations;
+using movie_rating_backend.Services.Interfaces;
+using movie_rating_backend.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,30 +17,43 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var configuration = builder.Configuration;
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<TokenGenerator>();
+builder.Services.AddScoped<IRatingService, RatingService>();
 builder.Services.AddAutoMapper(typeof(MovieMapperProfile));
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseNpgsql(configuration.GetConnectionString("WebApiDatabase"));
 });
+builder.Services.AddAuthorization(options =>
+		{
+			options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("admin"));
+		});
 builder.Services.AddAuthentication(options =>
                   {
                           options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                           options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                          options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                   }
-                  ).AddJwtBearer(x =>
+                  ).AddJwtBearer(options =>
                   {
-                          x.TokenValidationParameters = new TokenValidationParameters
+                          options.TokenValidationParameters = new TokenValidationParameters
                           {
-                                  ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                                  ValidAudience = builder.Configuration["Jwt:Audience"],
-                                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                                  ValidIssuer = configuration["Jwt:Issuer"],
+                                  ValidAudience = configuration["Jwt:Audience"],
+                                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
                                   ValidateIssuer = true,
                                   ValidateAudience = true,
                                   ValidateLifetime = true,
                                   ValidateIssuerSigningKey = true
                           };
                   });
+builder.Services.AddCors(c =>
+{
+    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+});
+
 
 var app = builder.Build();
 
@@ -50,6 +63,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowOrigin");
 
 app.UseHttpsRedirection();
 
