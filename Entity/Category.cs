@@ -7,7 +7,8 @@ namespace movie_rating_backend.Entity
         
         public int Id { get; set; }
 
-        public required string Name { get; set; }
+        [Required]
+        public string Name { get; set; }
 
         public List<Movie>? Movies { get; set; }
 
