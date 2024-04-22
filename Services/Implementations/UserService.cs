@@ -3,11 +3,12 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using movie_rating_backend.Entity;
-using movie_rating_backend.Models.DTOs;
 using movie_rating_backend.Helpers;
+using movie_rating_backend.Models.DTOs.UserDtos;
+using movie_rating_backend.Services.Interfaces;
 
 
-namespace movie_rating_backend.Services
+namespace movie_rating_backend.Services.Implementations
 {
     public class UserService : IUserService
     {
@@ -35,11 +36,11 @@ namespace movie_rating_backend.Services
             _appDbContext.Users.Add(newUser);
 
             await _appDbContext.SaveChangesAsync();
-            
+
 
 
             return _mapper.Map<UserLoginDto>(newUser);
-           
+
         }
 
         public async Task<string> Login(string username, string password)
@@ -61,21 +62,21 @@ namespace movie_rating_backend.Services
             return token;
         }
 
-        public async Task<GetUserDto> GetUserByUsername(String username)
+        public async Task<GetUserDto> GetUserByUsername(string username)
         {
-                var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+            var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
 
-                if (user == null)
-                {
-                    return null;
-                }
-                return _mapper.Map<GetUserDto>(user);
-
-
-
+            if (user == null)
+            {
+                return null;
             }
+            return _mapper.Map<GetUserDto>(user);
 
-        public async Task<GetUserDto> CheckEmail(String email)
+
+
+        }
+
+        public async Task<GetUserDto> CheckEmail(string email)
         {
             var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
 
@@ -100,9 +101,9 @@ namespace movie_rating_backend.Services
 
         }
 
-        
 
-        public async Task<bool> DeleteUserByUsername(String username)
+
+        public async Task<bool> DeleteUserByUsername(string username)
         {
             {
                 var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
@@ -117,7 +118,7 @@ namespace movie_rating_backend.Services
             }
         }
 
-        public async Task<string> UpdateUserByUsername(String username, CreateUserDto updateUser)
+        public async Task<string> UpdateUserByUsername(string username, CreateUserDto updateUser)
         {
             var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
             if (user == null)
@@ -125,17 +126,17 @@ namespace movie_rating_backend.Services
                 return "User was not updated : User not found";
             }
 
-            
+
             user.Email = updateUser.Email;
             user.Username = updateUser.Username;
             user.Password = PasswordHelper.HashPassword(updateUser.Password);
             await _appDbContext.SaveChangesAsync();
 
-            return "User with username" + " " + user.Username +" " + "was updated succsesfully";
+            return "User with username" + " " + user.Username + " " + "was updated succsesfully";
         }
 
 
-        
+
     }
 
 }

@@ -8,7 +8,7 @@ using movie_rating_backend.Entity;
 
 namespace movie_rating_backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/asa/")]
     [ApiController]
     public class LoginController : ControllerBase
     {

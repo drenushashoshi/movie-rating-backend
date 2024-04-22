@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace movie_rating_backend.Models.DTOs
+namespace movie_rating_backend.Models.DTOs.UserDtos
 {
     public class UserLoginDto
     {

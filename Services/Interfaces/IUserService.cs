@@ -1,15 +1,15 @@
-﻿using movie_rating_backend.Models.DTOs;
+﻿using movie_rating_backend.Models.DTOs.UserDtos;
 
-namespace movie_rating_backend.Services
+namespace movie_rating_backend.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<GetUserDto> GetUserByUsername(String username);
+        Task<GetUserDto> GetUserByUsername(string username);
 
-        Task<GetUserDto> CheckEmail(String email);
+        Task<GetUserDto> CheckEmail(string email);
         Task<UserLoginDto> CreateUser(CreateUserDto newUser);
         Task<List<GetUserDto>> GetAllUsers();
-        Task<bool> DeleteUserByUsername(String username);
+        Task<bool> DeleteUserByUsername(string username);
         Task<string> Login(string username, string password);
 
         Task<string> UpdateUserByUsername(string username, CreateUserDto updateUser);

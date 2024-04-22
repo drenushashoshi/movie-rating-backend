@@ -3,8 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using movie_rating_backend.Entity;
+using movie_rating_backend.Services.Interfaces;
 
-namespace movie_rating_backend.Services
+namespace movie_rating_backend.Services.Implementations
 {
     public class CategoryService : ICategoryService
     {

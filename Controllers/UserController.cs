@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using movie_rating_backend.Models.DTOs;
-using movie_rating_backend.Services;
+using movie_rating_backend.Models.DTOs.UserDtos;
+using movie_rating_backend.Services.Interfaces;
 
 namespace movie_rating_backend.Controllers
 {
 
     [ApiController]
-    [Route("Users")]
+    [Route("users")]
 
     public class UserController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace movie_rating_backend.Controllers
             _userService = userService;
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         public async Task<ActionResult<UserLoginDto>> CreateUser(CreateUserDto addUserDto)
         {
             var existingUsername = await _userService.GetUserByUsername(addUserDto.Username);
@@ -41,7 +41,7 @@ namespace movie_rating_backend.Controllers
 
 
         }
-        [HttpPost("Login")]
+        [HttpPost("login")]
 
         public async Task<IActionResult> Login(UserLoginDto request)
         {
@@ -51,7 +51,7 @@ namespace movie_rating_backend.Controllers
           
         }
 
-        [HttpGet]
+        [HttpGet("{username}")]
         public async Task<ActionResult<GetUserDto>> GetUserByUsername(string username)
         {
             var getUser = await _userService.GetUserByUsername(username);
@@ -67,7 +67,7 @@ namespace movie_rating_backend.Controllers
 
         }
 
-        [HttpGet("GetAllUsers")]
+        [HttpGet]
         public async Task<ActionResult<List<GetUserDto>>> GetAllUsers()
         {
             var allUsers = await _userService.GetAllUsers();
@@ -75,14 +75,14 @@ namespace movie_rating_backend.Controllers
             return Ok(allUsers);
         }
 
-        [HttpDelete("DeleteUserByUsername")]
+        [HttpDelete("delete/{username}")]
         public async Task<IActionResult> DeleteUserByUsername(String username)
         {
             var user = await _userService.DeleteUserByUsername(username);
             return Ok();
         }
 
-        [HttpPut("UpdateUserByUsername")]
+        [HttpPut("update/{username}")]
 
         public async Task <IActionResult> UpdateUserByUsername(String username, CreateUserDto updateUser)
         {

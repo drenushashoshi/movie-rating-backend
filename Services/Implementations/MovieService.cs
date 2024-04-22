@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using movie_rating_backend.Entity;
 using movie_rating_backend.Models.DTOs;
+using movie_rating_backend.Models.DTOs.MovieDtos;
+using movie_rating_backend.Services.Interfaces;
 
-namespace movie_rating_backend.Services
+namespace movie_rating_backend.Services.Implementations
 {
-    public class MovieService: IMovieService
+    public class MovieService : IMovieService
     {
         private readonly AppDbContext _appDbContext;
         private readonly IMapper _mapper;
@@ -54,5 +56,23 @@ namespace movie_rating_backend.Services
 
         }
 
+        public async Task<double> GetAverageRating(Guid movieId)
+        {
+
+            var ratings = await _appDbContext.Ratings
+                .Where(r => r.MovieId == movieId)
+                .ToListAsync();
+
+            if (ratings == null || !ratings.Any())
+            {
+                return 0;
+            }
+
+
+            double totalRating = ratings.Sum(r => r.RatingScore);
+            double averageRating = totalRating / ratings.Count;
+
+            return averageRating;
+        }
     }
 }

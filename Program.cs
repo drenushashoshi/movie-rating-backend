@@ -21,6 +21,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<TokenGenerator>();
 builder.Services.AddScoped<IRatingService, RatingService>();
 builder.Services.AddAutoMapper(typeof(MovieMapperProfile));
+builder.Services.AddAutoMapper(typeof(UserMapperProfile));
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseNpgsql(configuration.GetConnectionString("WebApiDatabase"));
@@ -28,6 +29,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 builder.Services.AddAuthorization(options =>
 		{
 			options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("admin"));
+            options.AddPolicy("RequireUserRole", policy => policy.RequireRole("user"));
 		});
 builder.Services.AddAuthentication(options =>
                   {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using movie_rating_backend.Entity;
 
-namespace movie_rating_backend.Services
+namespace movie_rating_backend.Services.Interfaces
 {
     public interface ICategoryService
     {

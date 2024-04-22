@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using movie_rating_backend.Entity;
-using movie_rating_backend.Services;
+using movie_rating_backend.Services.Interfaces;
 
 namespace movie_rating_backend.Controllers
 {

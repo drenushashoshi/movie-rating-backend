@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using movie_rating_backend.Entity;
-using movie_rating_backend.Models.DTOs;
+using movie_rating_backend.Models.DTOs.UserDtos;
 
 namespace movie_rating_backend.Mappings
 {
