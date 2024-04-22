@@ -14,7 +14,7 @@ namespace movie_rating_backend.Controllers
 
         public CategoryController(ICategoryService categoryService)
         {
-            _categoryService = categoryService;
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
         }
 
         [HttpPost]

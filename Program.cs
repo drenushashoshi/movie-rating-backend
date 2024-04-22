@@ -20,6 +20,7 @@ builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<TokenGenerator>();
 builder.Services.AddScoped<IRatingService, RatingService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddAutoMapper(typeof(MovieMapperProfile));
 builder.Services.AddAutoMapper(typeof(UserMapperProfile));
 builder.Services.AddDbContext<AppDbContext>(opt =>
