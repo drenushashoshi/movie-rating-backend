@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using movie_rating_backend.Models.DTOs.UserDtos;
 using movie_rating_backend.Services.Interfaces;
 
@@ -18,6 +19,7 @@ namespace movie_rating_backend.Controllers
         }
 
         [HttpPost("register")]
+        
         public async Task<ActionResult<UserLoginDto>> CreateUser(CreateUserDto addUserDto)
         {
             var existingUsername = await _userService.GetUserByUsername(addUserDto.Username);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using movie_rating_backend.Models.DTOs.MovieDtos;
 using movie_rating_backend.Models.DTOs.RatingDtos;
 using movie_rating_backend.Services.Interfaces;
 
@@ -14,7 +15,7 @@ namespace movie_rating_backend.Controllers
             _ratingService = ratingService;
         }
 
-        [HttpPost("add_rating")]
+        [HttpPost("add")]
         [ActionName(nameof(CreateRatingDto))]
         public async Task<ActionResult<CreateRatingDto>> CreateRatingAsync(CreateRatingDto addRatingDto)
         {
@@ -40,5 +41,20 @@ namespace movie_rating_backend.Controllers
 
 
         }
+
+        [HttpGet("{userId}/your_ratings")]
+        public async Task<ActionResult<List<GetMovieDto>>> GetMoviesRatedByUser(Guid userId)
+        {
+            var getRatedMovies = await _ratingService.GetMoviesRatedByUser(userId);
+            return Ok(getRatedMovies);
+        }
+
+        [HttpPut("update/{movieId}/{userId}")]
+        public async Task<ActionResult<bool>> UpdateRatingAsync( Guid movieId,  Guid userId,[FromBody] UpdateRatingDto dto)
+        {
+            var isUpdated = await _ratingService.UpdateRatingAsync(movieId, userId, dto);
+            return Ok(isUpdated);
+        }
+
     }
 }

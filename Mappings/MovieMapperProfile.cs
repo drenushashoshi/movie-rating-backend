@@ -16,6 +16,8 @@ namespace movie_rating_backend.Mappings
 
             CreateMap<Rating, CreateRatingDto>();
             CreateMap<CreateRatingDto, Rating>();
+            CreateMap<UpdateRatingDto, Rating>();
+            CreateMap<Rating, UpdateRatingDto>();
         }
     }
 }

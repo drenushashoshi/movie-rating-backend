@@ -27,7 +27,7 @@ namespace movie_rating_backend.Helpers
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iss, _configuration["Jwt:Issuer"]),
                 new Claim(JwtRegisteredClaimNames.Aud, _configuration["Jwt:Audience"]),
-                new Claim(JwtRegisteredClaimNames.Exp, DateTime.UtcNow.AddHours(6).ToString())
+                new Claim(JwtRegisteredClaimNames.Exp, DateTime.UtcNow.AddHours(1).ToString())
 
             };
 
