@@ -61,16 +61,10 @@ namespace movie_rating_backend.Services.Implementations
 
             var ratings = await _appDbContext.Ratings
                 .Where(r => r.MovieId == movieId)
+                .Select(r => r.RatingScore)
                 .ToListAsync();
 
-            if (ratings == null || !ratings.Any())
-            {
-                return 0;
-            }
-
-
-            double totalRating = ratings.Sum(r => r.RatingScore);
-            double averageRating = totalRating / ratings.Count;
+            double averageRating = ratings.Any() ? ratings.Average() : 0;
 
             return averageRating;
         }

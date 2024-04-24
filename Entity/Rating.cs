@@ -17,5 +17,6 @@ namespace movie_rating_backend.Entity
         public string? Comment { get; set; }
 
 
+
     }
 }
