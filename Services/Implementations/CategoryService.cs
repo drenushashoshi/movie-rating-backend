@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using movie_rating_backend.Entity;
+using movie_rating_backend.Models.DTOs.MovieDtos;
 using movie_rating_backend.Services.Interfaces;
+using movie_rating_backend.Models.DTOs.MovieDtos;
 
 namespace movie_rating_backend.Services.Implementations
 {
@@ -56,13 +58,30 @@ namespace movie_rating_backend.Services.Implementations
             return true;
         }
 
-        public async Task<List<Movie>> GetMoviesByCategory(string categoryName)
+        public async Task<List<GetMovieDto>> GetMoviesByCategory(string categoryName)
         {
             var category = await _context.Categories
                 .Include(c => c.Movies)
                 .FirstOrDefaultAsync(c => c.Name == categoryName);
 
-            return category?.Movies.ToList() ?? new List<Movie>();
+            if (category == null)
+                return new List<GetMovieDto>();
+
+            var movieDtos = category.Movies
+                .Select(movie => new GetMovieDto
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    Description = movie.Description,
+                    Year = movie.Year,
+                    CoverImageUrl = movie.CoverImageUrl,
+                    AvgRating = movie.AvgRating
+
+                })
+                .ToList();
+
+            return movieDtos;
         }
+
     }
 }
