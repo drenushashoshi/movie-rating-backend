@@ -10,5 +10,7 @@ namespace movie_rating_backend.Services.Interfaces
         Task<List<GetMovieDto>> GetAllMovies();
 
         Task<double> GetAverageRating(Guid movieId);
+
+        Task<List<GetMovieDto>> SearchMovies(string query);
     }
 }

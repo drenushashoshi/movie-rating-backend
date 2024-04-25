@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using movie_rating_backend.Entity;
 using movie_rating_backend.Models.DTOs.MovieDtos;
 using movie_rating_backend.Services.Interfaces;
 
@@ -58,6 +59,18 @@ namespace movie_rating_backend.Controllers
             return StatusCode(500, "Failed to create the movie.");
 
 
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<List<GetMovieDto>>> Search(string query)
+        {
+            var searchResults = await _movieService.SearchMovies(query);
+            var filteredResults = searchResults.Where(movie =>
+                movie.Title.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                movie.Description.Contains(query, StringComparison.OrdinalIgnoreCase)
+            ).ToList();
+
+            return Ok(filteredResults);
         }
 
     }
