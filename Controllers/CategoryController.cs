@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using movie_rating_backend.Entity;
 using movie_rating_backend.Services.Interfaces;
+using movie_rating_backend.Models.DTOs.MovieDtos;
 
 namespace movie_rating_backend.Controllers
 {
@@ -62,7 +63,7 @@ namespace movie_rating_backend.Controllers
         }
 
         [HttpGet("{categoryName}/movies")]
-        public async Task<ActionResult<List<Movie>>> GetMoviesByCategory(string categoryName)
+        public async Task<ActionResult<List<GetMovieDto>>> GetMoviesByCategory(string categoryName)
         {
             var movies = await _categoryService.GetMoviesByCategory(categoryName);
             return Ok(movies);

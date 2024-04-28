@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using movie_rating_backend.Entity;
 using movie_rating_backend.Models.DTOs;
@@ -68,5 +69,20 @@ namespace movie_rating_backend.Services.Implementations
 
             return averageRating;
         }
+
+        public async Task<List<GetMovieDto>> SearchMovies(string query)
+        {
+            var lowercaseQuery = query.ToLower();
+
+            var searchResults = await _appDbContext.Movies
+                .Where(movie =>
+                    movie.Title.ToLower().Contains(lowercaseQuery) ||
+                    movie.Description.ToLower().Contains(lowercaseQuery))
+                .ToListAsync();
+
+            return _mapper.Map<List<GetMovieDto>>(searchResults);
+        }
+
+
     }
 }
